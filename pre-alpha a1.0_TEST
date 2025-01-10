@@ -1,0 +1,72 @@
+Copy this source to run MsLoShell on version "a1.0_TEST"
+
+===============================================================================================================================================================================================
+# Import the necessary libraries
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+# Create a new form
+$form = New-Object System.Windows.Forms.Form
+$form.Text = "MsLoShell"
+$form.Width = 800
+$form.Height = 600
+
+# Create a new text box to display the command prompt
+$commandTextBox = New-Object System.Windows.Forms.TextBox
+$commandTextBox.Multiline = $true
+$commandTextBox.ScrollBars = [System.Windows.Forms.ScrollBars]::Both
+$commandTextBox.Dock = [System.Windows.Forms.DockStyle]::Fill
+$commandTextBox.Font = New-Object System.Drawing.Font -ArgumentList "Consolas", 10
+$commandTextBox.ForeColor = [Drawing.Color]::White
+$commandTextBox.BackColor = [Drawing.Color]::Black
+$commandTextBox.ReadOnly = $true
+$commandTextBox.Text = "Version A1.0_TEST PRE-ALPHA, build date 10012025, 
+Press ""Start MsLoShell"" to start MsLoShell. 
+CAUTION: YOU MUST PRESS ""START MSLOSHELL"" BEFORE TYPING ANY COMMANDS, YOU CANNOT TYPE COMMANDS HERE."
+$form.Controls.Add($commandTextBox)
+
+# Create a new label to separate the consoles
+$consoleSeparator = New-Object System.Windows.Forms.Label
+$consoleSeparator.Text = "-----------------------------------------------"
+$consoleSeparator.Font = New-Object System.Drawing.Font -ArgumentList "Consolas", 10
+$consoleSeparator.ForeColor = [Drawing.Color]::White
+$consoleSeparator.BackColor = [Drawing.Color]::Black
+$consoleSeparator.Dock = [System.Windows.Forms.DockStyle]::Fill
+$form.Controls.Add($consoleSeparator)
+
+# Create a new text box to display the output
+$outputTextBox = New-Object System.Windows.Forms.TextBox
+$outputTextBox.Multiline = $true
+$outputTextBox.ScrollBars = [System.Windows.Forms.ScrollBars]::Both
+$outputTextBox.Dock = [System.Windows.Forms.DockStyle]::Fill
+$outputTextBox.Font = New-Object System.Drawing.Font -ArgumentList "Consolas", 10
+$outputTextBox.ForeColor = [Drawing.Color]::White
+$outputTextBox.BackColor = [Drawing.Color]::Black
+$outputTextBox.ReadOnly = $false
+$form.Controls.Add($outputTextBox)
+
+# Create a new button to execute the command
+$executeButton = New-Object System.Windows.Forms.Button
+$executeButton.Text = "Start MsLoShell"
+$executeButton.Dock = [System.Windows.Forms.DockStyle]::Bottom
+$executeButton.Font = New-Object System.Drawing.Font -ArgumentList "Consolas", 15
+$executeButton.Add_Click({
+  $command = $commandTextBox.Text
+    $commandTextBox.Clear()
+  $output = Invoke-Expression $command
+
+
+  $commandTextBox.ReadOnly = $false
+  $executeButton.Text = "Execute"
+  $commandTextBox.Text = $output
+
+})
+$form.Controls.Add($executeButton)
+
+
+
+
+
+# Show the form
+$form.ShowDialog()
+=========================================================================================================================================================================================
